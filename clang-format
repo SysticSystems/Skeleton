@@ -1,0 +1,91 @@
+# =============================================================================
+# Generic .clang-format
+# Enforced on every project inheriting this skeleton.
+# =============================================================================
+
+Language: Cpp
+Standard: c++23
+
+# --- Base style then override everything explicitly ---
+BasedOnStyle: LLVM
+
+# ===========================================================================
+# INDENTATION
+# ===========================================================================
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+
+# Access specifiers (public/private/protected) sit at class level (0 offset),
+# and everything under them is indented 1 tab relative to the specifier.
+AccessModifierOffset: 0
+IndentAccessModifiers: false
+IndentCaseLabels: true
+
+# ===========================================================================
+# BRACE STYLE — Opening brace ALWAYS on same line (K&R / Java style)
+# ===========================================================================
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: false
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: false
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+# ===========================================================================
+# TEMPLATE DECLARATIONS — Each parameter on its own line
+# ===========================================================================
+AlwaysBreakTemplateDeclarations: true
+BinPackParameters: false
+BinPackArguments: false
+
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# ===========================================================================
+# LINE LENGTH & BREAKS
+# ===========================================================================
+ColumnLimit: 100
+ReflowComments: true
+BreakBeforeBinaryOperators: NonAssignment
+
+# ===========================================================================
+# SPACES
+# ===========================================================================
+SpaceBeforeParens: ControlStatements
+SpaceAfterTemplateKeyword: false
+SpacesInAngles: false
+SpaceInEmptyBlock: false
+SpaceBeforeCpp11BracedList: false
+
+# ===========================================================================
+# INCLUDES — grouped and sorted
+# ===========================================================================
+SortIncludes: CaseSensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: "^\"[a-z][a-z0-9_]*"
+    Priority: 1
+  - Regex: "^\".*\""
+    Priority: 2
+  - Regex: "^<.*>"
+    Priority: 3
+
+# ===========================================================================
+# MISC
+# ===========================================================================
+Cpp11BracedListStyle: true
+FixNamespaceComments: true
+MaxEmptyLinesToKeep: 1
+PointerAlignment: Left
+ReferenceAlignment: Left

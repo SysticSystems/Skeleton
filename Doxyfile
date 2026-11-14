@@ -1,0 +1,65 @@
+#---------------------------------------------------------------------------
+# Project Identification & Core Settings
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "$(PROJECT_NAME)"
+PROJECT_NUMBER         = "$(PROJECT_VERSION)"
+OUTPUT_DIRECTORY       = .docs-build
+CREATE_SUBDIRS         = NO
+OUTPUT_LANGUAGE        = English
+
+#---------------------------------------------------------------------------
+# Build & Extraction Options (Strict Contract Mode)
+#---------------------------------------------------------------------------
+EXTRACT_ALL            = NO    # Must be NO so undocumented code triggers warnings
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = NO    # Must be NO so undocumented members are exposed and flagged
+HIDE_UNDOC_CLASSES     = NO    # Must be NO so undocumented classes are exposed and flagged
+BRIEF_MEMBER_DESC      = YES
+REPEAT_BRIEF           = YES
+
+# Enforce strict documentation contract checks
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_NO_PARAMDOC       = YES
+WARN_AS_ERROR          = YES   # Halts the build immediately if documentation is missing
+
+#---------------------------------------------------------------------------
+# Input Configuration & Search Paths
+#---------------------------------------------------------------------------
+INPUT                  = src
+FILE_PATTERNS          = *.hpp \
+                         *.h \
+                         *.ixx \
+                         *.cpp
+EXTENSION_MAPPING      = ixx=C++   # Explicitly maps .ixx files to the C++ parser
+RECURSIVE              = YES
+EXCLUDE_PATTERNS       = */build/* \
+                         */.build-*/* \
+                         */tests/* \
+                         */bench/*
+
+#---------------------------------------------------------------------------
+# Custom Tag Mappings (Documentation Contract Aliases)
+#---------------------------------------------------------------------------
+ALIASES += objectif="@par Objectif:"
+ALIASES += recommendedUsage="@par Recommended Usage:"
+ALIASES += unrecommendedUsage="@par Unrecommended Usage:"
+ALIASES += complexity="@par Complexity:"
+
+#---------------------------------------------------------------------------
+# Graphviz / Dot Dependency Options (Fully disabled to prevent dot errors)
+#---------------------------------------------------------------------------
+HAVE_DOT               = NO
+COLLABORATION_GRAPH    = NO
+GROUP_GRAPHS           = NO
+INCLUDE_GRAPH          = NO
+INCLUDED_BY_GRAPH      = NO
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+GRAPHICAL_HIERARCHY    = NO
+DIRECTORY_GRAPH        = NO
+HTML_OUTPUT            = html
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = YES
