@@ -1,6 +1,7 @@
 # CMake / Conan generated build directories
 .build/
 .build-*/
+.docs-build
 
 # Conan generated per-user file
 CMakeUserPresets.json

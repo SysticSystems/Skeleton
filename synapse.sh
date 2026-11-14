@@ -78,14 +78,22 @@ PROFILE="${CONAN_PROFILE:-disabled}"
 CONAN_CACHE_DIR="$SCRIPT_DIR/.conan/cache/${PROFILE,,}"
 mkdir -p "$CONAN_CACHE_DIR"
 
+# Capture current host user UID and GID dynamically
+HOST_UID="$(id -u)"
+HOST_GID="$(id -g)"
+
 case "$ACTION" in
     create)
-        log_info "Building base environment image '$IMAGE_NAME'..."
+        log_info "Building base environment image '$IMAGE_NAME' (UID=$HOST_UID, GID=$HOST_GID)..."
         if [[ ! -f "$DOCKERFILE_PATH" ]]; then
             log_error "Dockerfile not found at $DOCKERFILE_PATH"
             exit 1
         fi
-        $OCI_BIN build -f "$DOCKERFILE_PATH" -t "$IMAGE_NAME" "$BUILD_CONTEXT"
+        $OCI_BIN build \
+            -f "$DOCKERFILE_PATH" \
+            --build-arg USER_UID="$HOST_UID" \
+            --build-arg USER_GID="$HOST_GID" \
+            -t "$IMAGE_NAME" "$BUILD_CONTEXT"
         log_succ "Environment image created."
         ;;
     run)
@@ -105,14 +113,14 @@ case "$ACTION" in
 
         log_info "Launching Synapse from base image library..."
 
-        # Mount host project to /project and execute via image's native ENTRYPOINT
+        # Mount host project to /project and map Conan cache to developer user home
         $OCI_BIN run --rm $TTY_ARGS \
           --name "$CONTAINER_NAME" \
           --network host \
           --security-opt seccomp=unconfined \
           "${ENV_ARGS[@]}" \
           -v "$PROJECT_ROOT:/project:z" \
-          -v "$CONAN_CACHE_DIR:/root/.conan2:z" \
+          -v "$CONAN_CACHE_DIR:/home/developer/.conan2:z" \
           -w /project \
           "$IMAGE_NAME" \
           "$@"

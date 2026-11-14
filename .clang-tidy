@@ -65,12 +65,15 @@ Checks: >
   cert-str34-c,
   cppcoreguidelines-interfaces-global-init,
   cppcoreguidelines-narrowing-conversions,
+  cppcoreguidelines-owning-memory,
   cppcoreguidelines-pro-type-member-init,
   cppcoreguidelines-pro-type-static-cast-downcast,
   cppcoreguidelines-slicing,
   google-default-arguments,
+  google-explicit-constructor,
   google-runtime-operator,
   hicpp-exception-baseclass,
+  hicpp-explicit-conversions,
   hicpp-multiway-paths-covered,
   misc-misplaced-const,
   misc-new-delete-overloads,
@@ -157,103 +160,99 @@ HeaderFilterRegex: "(include|src)/.*"
 CheckOptions:
 
   # ===========================================================================
-  # NAMING PROTOCOL (Dot-Notation Namespace Keys)
+  # NAMING PROTOCOL (Lowercase Check Keys)
   # ===========================================================================
 
   # --- Classes & Structs: PascalCase ---
-  - key: Readability.Identifier.Naming.ClassCase
+  - key: readability-identifier-naming.ClassCase
     value: CamelCase
-  - key: Readability.Identifier.Naming.StructCase
+  - key: readability-identifier-naming.StructCase
     value: CamelCase
 
   # --- Methods / Functions: camelCase ---
-  - key: Readability.Identifier.Naming.FunctionCase
+  - key: readability-identifier-naming.FunctionCase
     value: camelBack
-  - key: Readability.Identifier.Naming.MethodCase
+  - key: readability-identifier-naming.MethodCase
     value: camelBack
 
   # --- Variables & Parameters: camelCase ---
-  - key: Readability.Identifier.Naming.VariableCase
+  - key: readability-identifier-naming.VariableCase
     value: camelBack
-  - key: Readability.Identifier.Naming.ParameterCase
+  - key: readability-identifier-naming.ParameterCase
     value: camelBack
-  - key: Readability.Identifier.Naming.LocalVariableCase
+  - key: readability-identifier-naming.LocalVariableCase
     value: camelBack
 
   # --- Member variables: camelCase ---
-  - key: Readability.Identifier.Naming.MemberCase
+  - key: readability-identifier-naming.MemberCase
     value: camelBack
-  - key: Readability.Identifier.Naming.PrivateMemberCase
+  - key: readability-identifier-naming.PrivateMemberCase
     value: camelBack
-  - key: Readability.Identifier.Naming.PublicMemberCase
+  - key: readability-identifier-naming.PublicMemberCase
     value: camelBack
-  - key: Readability.Identifier.Naming.ProtectedMemberCase
+  - key: readability-identifier-naming.ProtectedMemberCase
     value: camelBack
 
   # --- Template Parameters: UPPER_CASE, minimum 4 chars ---
-  - key: Readability.Identifier.Naming.TemplateParameterCase
+  - key: readability-identifier-naming.TemplateParameterCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.TemplateParameterMinimumLength
+  - key: readability-identifier-naming.TemplateParameterMinimumLength
     value: "4"
-  - key: Readability.Identifier.Naming.TemplateTemplateParameterCase
+  - key: readability-identifier-naming.TemplateTemplateParameterCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.TemplateTemplateParameterMinimumLength
+  - key: readability-identifier-naming.TemplateTemplateParameterMinimumLength
     value: "4"
-  - key: Readability.Identifier.Naming.TypeTemplateParameterCase
+  - key: readability-identifier-naming.TypeTemplateParameterCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.TypeTemplateParameterMinimumLength
+  - key: readability-identifier-naming.TypeTemplateParameterMinimumLength
     value: "4"
-  - key: Readability.Identifier.Naming.ValueTemplateParameterCase
+  - key: readability-identifier-naming.ValueTemplateParameterCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.ValueTemplateParameterMinimumLength
+  - key: readability-identifier-naming.ValueTemplateParameterMinimumLength
     value: "4"
 
   # --- Namespaces: lower_case ---
-  - key: Readability.Identifier.Naming.NamespaceCase
+  - key: readability-identifier-naming.NamespaceCase
     value: lower_case
 
   # --- Enums: PascalCase + 'Enum' suffix ---
-  - key: Readability.Identifier.Naming.EnumCase
+  - key: readability-identifier-naming.EnumCase
     value: CamelCase
-  - key: Readability.Identifier.Naming.EnumSuffix
+  - key: readability-identifier-naming.EnumSuffix
     value: Enum
-  - key: Readability.Identifier.Naming.EnumConstantCase
+  - key: readability-identifier-naming.EnumConstantCase
     value: UPPER_CASE
 
   # --- Constants & Constexpr: K_ prefix + UPPER_CASE ---
-  - key: Readability.Identifier.Naming.ConstantCase
+  - key: readability-identifier-naming.ConstantCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.ConstantPrefix
+  - key: readability-identifier-naming.ConstantPrefix
     value: K_
-  - key: Readability.Identifier.Naming.ConstexprVariableCase
+  - key: readability-identifier-naming.ConstexprVariableCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.ConstexprVariablePrefix
+  - key: readability-identifier-naming.ConstexprVariablePrefix
     value: K_
-  - key: Readability.Identifier.Naming.GlobalConstantCase
+  - key: readability-identifier-naming.GlobalConstantCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.GlobalConstantPrefix
+  - key: readability-identifier-naming.GlobalConstantPrefix
     value: K_
-  - key: Readability.Identifier.Naming.StaticConstantCase
+  - key: readability-identifier-naming.StaticConstantCase
     value: UPPER_CASE
-  - key: Readability.Identifier.Naming.StaticConstantPrefix
+  - key: readability-identifier-naming.StaticConstantPrefix
     value: K_
 
   # --- Type aliases: PascalCase ---
-  - key: Readability.Identifier.Naming.TypeAliasCase
+  - key: readability-identifier-naming.TypeAliasCase
     value: CamelCase
-  - key: Readability.Identifier.Naming.TypedefCase
+  - key: readability-identifier-naming.TypedefCase
     value: CamelCase
 
   # ===========================================================================
   # MINIMUM LENGTH & PARAMETER CONSTRAINTS
   # ===========================================================================
-  - key: Readability.Identifier.Length.MinimumVariableNameLength
-    value: ""
-  - key: Readability.Identifier.Length.MinimumParameterNameLength
+  - key: readability-identifier-length.MinimumVariableNameLength
+    value: "1"
+  - key: readability-identifier-length.MinimumParameterNameLength
     value: "3"
-  - key: Readability.Identifier.Length.MinimumLoopCounterNameLength
+  - key: readability-identifier-length.MinimumLoopCounterNameLength
     value: "3"
-  - key: Readability.Identifier.Length.IgnoredLoopCounterNames
-    value: ""
-  - key: Readability.NamedParameter.IgnoredRegexp
-    value: ""

@@ -31,6 +31,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     message(FATAL_ERROR
@@ -41,6 +42,15 @@ endif()
 if(NOT CMAKE_GENERATOR MATCHES "Ninja")
     message(FATAL_ERROR
             "C++ module dependency scanning requires Ninja. Configure with -G Ninja.")
+endif()
+
+# --- Clang-Tidy Setup (Target-specific to avoid module compiler-driver crashes) ---
+find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+if(CLANG_TIDY_EXE)
+    set(CLANG_TIDY_COMMAND "${CLANG_TIDY_EXE};--config-file=${CMAKE_CURRENT_SOURCE_DIR}/.clang-tidy")
+    message(STATUS "Clang-Tidy found: ${CLANG_TIDY_EXE}")
+else()
+    message(WARNING "clang-tidy not found in PATH; static analysis disabled.")
 endif()
 
 option(BUILD_TESTING "Build the dependency-free test executable" OFF)
@@ -77,6 +87,9 @@ if(BUILD_TESTING)
     add_executable(${PROJECT_NAME}_tests
             "${CMAKE_CURRENT_SOURCE_DIR}/tests/exemple.cpp"
     )
+    if(CLANG_TIDY_EXE)
+        set_target_properties(${PROJECT_NAME}_tests PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    endif()
     target_link_libraries(${PROJECT_NAME}_tests PRIVATE ${PROJECT_NAME}::${PROJECT_NAME} GTest::gtest GTest::gtest_main)
     target_compile_features(${PROJECT_NAME}_tests PRIVATE cxx_std_23)
     add_test(NAME ${PROJECT_NAME}_tests COMMAND ${PROJECT_NAME}_tests)
@@ -88,6 +101,9 @@ if(BUILD_BENCHMARKING)
     add_executable(${PROJECT_NAME}_bench
             "${CMAKE_CURRENT_SOURCE_DIR}/bench/exemple.cpp"
     )
+    if(CLANG_TIDY_EXE)
+        set_target_properties(${PROJECT_NAME}_bench PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
+    endif()
     target_link_libraries(${PROJECT_NAME}_bench PRIVATE ${PROJECT_NAME}::${PROJECT_NAME} benchmark::benchmark benchmark::benchmark_main)
     target_compile_features(${PROJECT_NAME}_bench PRIVATE cxx_std_23)
 endif()
