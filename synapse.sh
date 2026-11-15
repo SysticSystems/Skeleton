@@ -27,11 +27,16 @@ fi
 ACTION="$1"
 shift
 
-# Project name is read strictly from directory name, NOT from .env
+# ---------------------------------------------------------------------------
+# Project identity setup (Fallback metadata for container image naming)
+# ---------------------------------------------------------------------------
 PROJECT_NAME="$(basename "$PROJECT_ROOT")"
-if [[ ! "$PROJECT_NAME" =~ ^[a-z][a-z0-9_]*$ ]]; then
-    log_error "Project directory name '$PROJECT_NAME' must match ^[a-z][a-z0-9_]*$. Create the project with a lowercase name starting with a letter."
-    exit 1
+
+ENV_FILE="$SCRIPT_DIR/.env"
+if [[ -f "$ENV_FILE" ]]; then
+    set -o allexport
+    source <(grep -v '^#' "$ENV_FILE" | grep -v '^\s*$')
+    set +o allexport
 fi
 
 ENV_FILE="$SCRIPT_DIR/.env"
